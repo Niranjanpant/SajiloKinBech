@@ -1,0 +1,18 @@
+{
+  "name": "sajilokinbech",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^9.0.0",
+    "express": "^4.17.1",
+    "validator": "^13.5.2"
+  },
+  "devDependencies": {},
+  "description": ""
+}
