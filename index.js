@@ -20,7 +20,7 @@ const userRouter = require("./routes/user");
 app.use(express.json());
 
 //mout routers
-app.use("/api/v1/user", userRouter);
+app.use("/api/v1/userAuth", userRouter);
 
 app.listen(PORT, () => {
   console.log(`server is running wild on ${PORT}`);
