@@ -24,6 +24,7 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     required: true,
     unique: true,
+    maxLength: [10, "phone no cannot be longer than 10 character"],
   },
   address: {
     type: String,
@@ -36,6 +37,13 @@ const UserSchema = new mongoose.Schema({
     default: Date.now(),
   },
 });
+
+// //use virtual relationship
+// UserSchema.virtual("properties", {
+//   ref: "Property",
+//   localField: "_id",
+// foreignField: "user",
+// });
 
 //hash the plain text password
 UserSchema.pre("save", async function (next) {
