@@ -20,6 +20,10 @@ const UserSchema = new mongoose.Schema({
     minLength: 6,
     select: false,
   },
+  photo: {
+    type: String,
+    default: "no-image.jpg",
+  },
   phoneNumber: {
     type: Number,
     required: true,

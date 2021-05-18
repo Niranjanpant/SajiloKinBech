@@ -7,8 +7,6 @@ const {
   updateProperty,
   uploadPhotoProperty,
 } = require("../controller/property");
-const Property = require("../models/Property");
-const advanceQuery = require("../middleware/advanceQuery");
 const router = express.Router();
 const { protect } = require("../middleware/auth");
 

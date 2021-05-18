@@ -1,4 +1,6 @@
 const crypto = require("crypto");
+const path = require("path");
+const Property = require("../models/Property");
 const User = require("../models/User");
 const sendEmail = require("../utils/sendEmail");
 
@@ -17,8 +19,7 @@ exports.createUser = async (req, res, next) => {
     sendEmail({
       email: user.email,
       subject: "Welcome to the Sajilokinbech family!",
-      text:
-        "You received this email because you have subscribed to the sajilokinbechfamily",
+      text: "You received this email because you have subscribed to the sajilokinbechfamily",
     });
     res.status(200).json({ success: true, data: user, token: token });
   } catch (e) {
@@ -190,5 +191,57 @@ exports.resetPassword = async (req, res, next) => {
     res.status(200).json({ success: true, data: user, token: token });
   } catch (e) {
     console.log(e);
+  }
+};
+
+//@desc  update a user photo
+//@route PUT/api/v1/userAuth/me/avatar/
+//@access Private
+
+exports.updateUserAvatar = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found!" });
+    }
+
+    const file = req.files.file;
+
+    //make sure the file size is less than 1 mb
+
+    if (file.size > process.env.MAX_FILE_UPLOAD_SIZE) {
+      return res
+        .status(400)
+        .json({ success: true, error: "File size should be less than 1mb" });
+    }
+
+    //make sure the photo is a image
+    if (!file.mimetype.startsWith("image")) {
+      return res
+        .status(400)
+        .json({ success: true, error: "The photo should be an image type" });
+    }
+
+    //create custom file name
+    file.name = `userAvatar_${user._id}${path.parse(file.name).ext}`;
+
+    //now upload file with mv function
+    file.mv(
+      `${process.env.FILE_UPLOAD_PATH_AVATAR}/${file.name}`,
+      async (err) => {
+        if (err) {
+          console.log(err);
+          return res
+            .status(500)
+            .json({ success: false, error: "Problem with file upload" });
+        }
+      }
+    );
+    await User.findByIdAndUpdate(req.user._id, { photo: file.name });
+    res.status(200).json({ success: true, data: file.name });
+  } catch (e) {
+    console.log(e);
+    res.status(400).send(e);
   }
 };

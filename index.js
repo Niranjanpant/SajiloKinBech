@@ -20,7 +20,13 @@ const userRouter = require("./routes/user");
 const propertyRouter = require("./routes/property");
 
 //fileupload middleware
-app.use(fileupload());
+app.use(
+  fileupload({
+    limits: {
+      files: 1,
+    },
+  })
+);
 
 //set statsic foloder
 app.use(express.static(path.join(__dirname, "public")));
